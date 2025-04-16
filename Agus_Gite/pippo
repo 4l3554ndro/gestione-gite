@@ -1,0 +1,84 @@
+/*
+Progetto completo base per gestione Gite Scolastiche in PHP (MVC + SQL + HTML)
+Questo è un file guida per l'organizzazione e implementazione dei principali file.
+*/
+
+// STRUTTURA BASE DEI FILES
+
+// config/db.php
+
+
+// utils/session.php
+
+
+
+// controllers/AuthController.php
+
+// models/User.php
+
+// views/auth/login.php
+
+
+// views/auth/register.php
+
+
+// views/home.php
+
+
+/*
+Progetto completo base per gestione Gite Scolastiche in PHP (MVC + SQL + HTML)
+*/
+
+// config/db.php
+
+
+// utils/session.php
+
+
+// index.php
+
+
+// controllers/AuthController.php
+
+
+// models/User.php
+
+// models/Gita.php
+
+// controllers/GiteController.php
+
+
+// views/gite/lista.php
+
+// views/gite/dettaglio.php
+
+// views/gite/nuova.php
+
+
+// views/auth/login.php
+<form method="POST" action="controllers/AuthController.php">
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <button type="submit" name="action" value="login">Login</button>
+</form>
+<a href="index.php?page=register">Registrati</a>
+
+// views/auth/register.php
+<form method="POST" action="controllers/AuthController.php">
+    <input type="text" name="nome" placeholder="Nome" required>
+    <input type="text" name="cognome" placeholder="Cognome" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <button type="submit" name="action" value="register">Registrati</button>
+</form>
+<a href="index.php?page=login">Login</a>
+
+// views/home.php
+<h1>Benvenuto nel portale Gite Scolastiche</h1>
+<a href="index.php?page=gite">Visualizza Gite</a>
+<?php if (!isLoggedIn()) { ?>
+<a href="index.php?page=login">Login</a>
+<?php } else { ?>
+<a href="index.php?page=logout">Logout</a>
+<?php } ?>
+
