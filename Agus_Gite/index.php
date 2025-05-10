@@ -18,19 +18,23 @@ else
     $url = '/';
 }
 
-$controller = new AuthController($pdo);
+$controller = new AuthController($conn);
 
 $page = $_GET['page'] ?? 'home';
 switch ($page) {
     case 'login':
         include 'views/auth/login.php';
         break;
-    case 'register':
+    case 'register':       
         include 'views/auth/register.php';
         break;
     case 'logout':
         include 'controllers/AuthController.php';
         logout();
+        break;
+    case 'registerok':
+      
+        $controller->register($conn);
         break;
     case 'gite':
         include 'controllers/GiteController.php';

@@ -1,10 +1,11 @@
 <?php
 namespace Controllers;
+require_once 'models/User.php';
 use Model\User;
 
 class AuthController
 {
-    private $userModel;
+   
 
     public function __construct($pdo)
     {

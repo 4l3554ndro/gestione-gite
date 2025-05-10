@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Register</h1>
-<form method="POST" action="index.php?page=register">
+<form method="POST" action="index.php?page=registerok">
     <input type="text" name="nome" placeholder="Nome" required>
     <input type="text" name="cognome" placeholder="Cognome" required>
     <input type="email" name="email" placeholder="Email" required>
