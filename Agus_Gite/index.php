@@ -6,6 +6,7 @@ require_once 'models/Gita.php';
 require_once 'controllers/AuthController.php';
 require_once 'controllers/GiteController.php';
 use controllers\AuthController;
+use controllers\GiteController;
 
 $url = "";
 
@@ -18,31 +19,36 @@ else
     $url = '/';
 }
 
-$controller = new AuthController($conn);
+$authcontroller = new AuthController($conn);
+$gitecontroller = new GiteController($conn);
 
 $page = $_GET['page'] ?? 'home';
 switch ($page) {
     case 'login':
+        if ($authcontroller->logged()) {
+            header('Location: index.php');
+            exit();
+        }
         include 'views/auth/login.php';
         break;
     case 'register':       
         include 'views/auth/register.php';
         break;
     case 'logout':
-        include 'controllers/AuthController.php';
-        logout();
+        $authcontroller->logout();
         break;
     case 'registerok':
-      
-        $controller->register($conn);
+        $authcontroller->register($conn);
+        break;
+    case 'loginok':
+        $authcontroller->login($conn);
         break;
     case 'gite':
-        include 'controllers/GiteController.php';
-        showGite($conn);
+        
+        $gitecontroller->showGite($conn);
         break;
     case 'dettaglio_gita':
-        include 'controllers/GiteController.php';
-        dettaglioGita($conn);
+        $gitecontroller->dettaglioGita($conn);
         break;
     case 'aggiungi_gita':
         include 'controllers/GiteController.php';
@@ -52,7 +58,19 @@ switch ($page) {
         include 'controllers/GiteController.php';
         salvaGita($conn);
         break;
+    case 'iscriviti_gita':
+        $gitecontroller->iscrivitiGita($conn);
+        break;
+    case 'disiscriviti_gita':
+        $gitecontroller->disiscrivitiGita($conn);
+        break;
     default:
         include 'views/home.php';
+}
+function dd($var) {
+    echo '<pre>';
+    var_dump($var);
+    echo '</pre>';
+    die();
 }
 ?>

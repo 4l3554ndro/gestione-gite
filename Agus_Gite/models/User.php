@@ -7,7 +7,7 @@ class User {
         $stmt->execute();
     }
     public static function findByEmail($conn, $email) {
-        $stmt = $conn->prepare("SELECT * FROM users WHERE email = $email");
+        $stmt = $conn->prepare("SELECT * FROM users WHERE email = '$email'");
         $stmt->execute();
         return $stmt->fetch();
     }

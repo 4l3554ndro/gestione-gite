@@ -14,7 +14,7 @@
             <?= htmlspecialchars($gita['nome_meta']) ?> - <?= $gita['data'] ?> - €<?= $gita['costo_base'] ?>
         </a>
     </li>
-<?php endforeach; ?>
+<?php endforeach; dd($gite); ?>
 </ul>
 <?php if (isAdmin()) : ?>
 <a href="index.php?page=aggiungi_gita">Aggiungi Gita</a>
