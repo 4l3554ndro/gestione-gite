@@ -2,7 +2,7 @@
 namespace Model;
 class Gita {
     public static function all($conn, $user_id) {
-        $stmt = $conn->query("SELECT * FROM gite g LEFT JOIN iscrizioni i ON g.id=i.gita_id AND i.user_id=$user_id");
+        $stmt = $conn->query("SELECT g.id AS idgita, g.nome_meta, g.descrizione, g.data, g.costo_base, g.max_partecipanti, i.id AS idiscrizione, i.user_id, i.prezzo_totale FROM gite g LEFT JOIN iscrizioni i ON g.id=i.gita_id AND i.user_id=2;");
         return $stmt->fetchAll();
     }
     public static function find($conn, $id) {

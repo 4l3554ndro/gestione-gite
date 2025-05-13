@@ -10,11 +10,11 @@
 <ul>
 <?php foreach ($gite as $gita): ?>
     <li>
-        <a href="index.php?page=dettaglio_gita&id=<?= $gita['id'] ?>">
+        <a href="index.php?page=dettaglio_gita&id=<?= $gita['idgita'] ?>">
             <?= htmlspecialchars($gita['nome_meta']) ?> - <?= $gita['data'] ?> - €<?= $gita['costo_base'] ?>
         </a>
     </li>
-<?php endforeach; dd($gite); ?>
+<?php endforeach; //dd($gite); ?>
 </ul>
 <?php if (isAdmin()) : ?>
 <a href="index.php?page=aggiungi_gita">Aggiungi Gita</a>
