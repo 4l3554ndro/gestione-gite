@@ -19,19 +19,32 @@ class Gita {
         $stmt = $conn->prepare("INSERT INTO gite (nome_meta, descrizione, data, costo_base, max_partecipanti) VALUES ('$nome', '$descrizione', '$data', '$costo', '$max')");
         $stmt->execute();
     }
-
+// gita
     public static function iscrittoAGita($conn,$id, $user_id) {
         $stmt = $conn->prepare("SELECT * FROM iscrizioni i WHERE i.gita_id=$id AND i.user_id=$user_id");
         $stmt->execute();
         return $stmt->fetch();
-}
-
+    }
     public static function iscrivitiAGita($conn, $id, $user_id) {
         $stmt = $conn->prepare("INSERT INTO iscrizioni(user_id, gita_id) VALUES ('$user_id','$id')");
         $stmt->execute();
     }
     public static function disiscrivitiAGita($conn, $id, $user_id) {
         $stmt = $conn->prepare("DELETE FROM iscrizioni WHERE user_id=$user_id AND gita_id=$id");
+        $stmt->execute();
+    }
+// tour
+    public static function iscrittoATour($conn, $tour_id, $iscrizione_id) {
+        $stmt = $conn->prepare("SELECT * FROM iscrizioni_tour i WHERE i.tour_id=$tour_id AND i.iscrizione_id=$iscrizione_id");
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+    public static function iscrivitiATour($conn, $tour_id, $iscrizione_id) {
+        $stmt = $conn->prepare("INSERT INTO iscrizioni_tour(iscrizione_id, tour_id) VALUES ('$iscrizione_id','$tour_id')");
+        $stmt->execute();
+    }
+    public static function disiscrivitiATour($conn, $tour_id, $iscrizione_id) {
+        $stmt = $conn->prepare("DELETE FROM iscrizioni_tour WHERE iscrizione_id=$iscrizione_id AND tour_id=$tour_id");
         $stmt->execute();
     }
 }

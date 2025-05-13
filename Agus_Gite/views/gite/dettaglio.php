@@ -41,7 +41,13 @@ if (isset($iscritto['user_id'])) {
 <td>
     <?php
     if (isset($iscritto['user_id'])) {
-        echo "<button><a href=\"?page=dettaglio_gita&id=" . $tour['id'] . "\">Iscriviti</a></button>";
+        if (isset($isctour['id'])) {
+            $tour_id = $tour['id'];
+            //$iscrittoTour = Gita::iscrittoATour($conn, $tour_id, $iscritto['id']);
+        } else {
+            $iscrittoTour = false;
+        }
+        echo "<button><a href=\"?page=iscriviti_tour&id=" . $tour['id'] . "\">Iscriviti</a></button>";
     } else {
         echo "Iscriviti prima alla gita";
     }

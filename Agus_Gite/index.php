@@ -64,6 +64,12 @@ switch ($page) {
     case 'disiscriviti_gita':
         $gitecontroller->disiscrivitiGita($conn);
         break;
+    case 'iscriviti_tour':  
+        $gitecontroller->iscrivitiTour($conn);
+        break;  
+    case 'disiscriviti_tour':
+        $gitecontroller->disiscrivitiTour($conn);
+        break;
     default:
         include 'views/home.php';
 }

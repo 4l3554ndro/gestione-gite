@@ -21,6 +21,7 @@ function dettaglioGita($conn) {
     $id = $_GET['id'] ?? 0;
     $gita = Gita::find($conn, $id);
     $iscritto = Gita::iscrittoAGita($conn, $id, $_SESSION['user_id']);
+    $iscrittoTour = Gita::iscrittoATour($conn, $id, $_SESSION['user_id']);
     $tours = Gita::findtour($conn, $id);
     
     include 'views/gite/dettaglio.php';
@@ -40,6 +41,18 @@ function iscrivitiGita($conn) {
     header('Location: index.php?page=dettaglio_gita&id=' . $id);
 }
 function disiscrivitiGita($conn) {
+    $id = $_GET['id'] ?? 0;
+    $user_id = $_SESSION['user_id'];
+    Gita::disiscrivitiAGita($conn, $id, $user_id);
+    header('Location: index.php?page=gite');
+}
+function iscrivitiTour($conn) {
+    $id = $_GET['id'] ?? 0;
+    $user_id = $_SESSION['user_id'];
+    Gita::iscrivitiAGita($conn, $id, $user_id);
+    header('Location: index.php?page=dettaglio_gita&id=' . $id);
+}
+function disiscrivitiTour($conn) {
     $id = $_GET['id'] ?? 0;
     $user_id = $_SESSION['user_id'];
     Gita::disiscrivitiAGita($conn, $id, $user_id);
