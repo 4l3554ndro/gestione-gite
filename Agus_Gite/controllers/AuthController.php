@@ -30,7 +30,12 @@ function register($conn) {
     $cognome = $_POST['cognome'];
     $email = $_POST['email'];
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-    User::create($conn, $nome, $cognome, $email, $password);
+    if(isset($_POST['admin'])) {
+        $ruolo = 'admin';
+    } else {
+        $ruolo = 'utente';
+    }
+    User::create($conn, $nome, $cognome, $email, $password, $ruolo);
     header('Location: index.php?page=login');
 }
 

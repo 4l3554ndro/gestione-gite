@@ -21,7 +21,7 @@ function dettaglioGita($conn) {
     $id = $_GET['id'] ?? 0;
     $gita = Gita::find($conn, $id);
     $iscritto = Gita::iscrittoAGita($conn, $id, $_SESSION['user_id']);
-    $iscrittoTour = Gita::iscrittoATour($conn, $id, $_SESSION['user_id']);
+    //$iscrittoTour = Gita::iscrittoATour($conn, $id, $_SESSION['user_id']);
     $tours = Gita::findtour($conn, $id);
     
     include 'views/gite/dettaglio.php';
@@ -48,15 +48,17 @@ function disiscrivitiGita($conn) {
 }
 function iscrivitiTour($conn) {
     $id = $_GET['id'] ?? 0;
-    $user_id = $_SESSION['user_id'];
-    Gita::iscrivitiAGita($conn, $id, $user_id);
-    header('Location: index.php?page=dettaglio_gita&id=' . $id);
+    $iscrizione_id = $_GET['iscrizione_id'];
+    $gita_id = $_GET['gita_id'];
+    Gita::iscrivitiATour($conn, $id, $iscrizione_id);
+    header('Location: index.php?page=dettaglio_gita&id=' . $gita_id);
 }
 function disiscrivitiTour($conn) {
     $id = $_GET['id'] ?? 0;
-    $user_id = $_SESSION['user_id'];
-    Gita::disiscrivitiAGita($conn, $id, $user_id);
-    header('Location: index.php?page=gite');
+    $iscrizione_id = $_GET['iscrizione_id'];
+    $gita_id = $_GET['gita_id'];
+    Gita::disiscrivitiATour($conn, $id, $iscrizione_id);
+    header('Location: index.php?page=dettaglio_gita&id=' . $gita_id);
 }
 function aggiungiGita($conn) {
     include 'views/gite/nuova.php';

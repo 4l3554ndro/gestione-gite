@@ -7,7 +7,35 @@ require_once 'controllers/AuthController.php';
 require_once 'controllers/GiteController.php';
 use controllers\AuthController;
 use controllers\GiteController;
-
+?>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand">Gestione Gite & Tour</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <?php if (!isLoggedIn()) { ?>
+                    <?php } else { ?>
+                    <a class="nav-link" href="index.php?page=gite">Elenco Gite</a>
+                    <?php } ?>
+                </li>
+                <li class="nav-item">
+                    <?php if (!isLoggedIn()) { ?>
+                        <a class="nav-link" href="index.php?page=login">Login</a>
+                    <?php } else { ?>
+                        <a class="nav-link" href="index.php?page=logout">Logout</a>
+                    <?php } ?>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<?php
 $url = "";
 
 if(isset($_GET['url']))
@@ -51,12 +79,10 @@ switch ($page) {
         $gitecontroller->dettaglioGita($conn);
         break;
     case 'aggiungi_gita':
-        include 'controllers/GiteController.php';
-        aggiungiGita($conn);
+        $gitecontroller->aggiungiGita($conn);
         break;
     case 'salva_gita':
-        include 'controllers/GiteController.php';
-        salvaGita($conn);
+        $gitecontroller->salvaGita($conn);
         break;
     case 'iscriviti_gita':
         $gitecontroller->iscrivitiGita($conn);

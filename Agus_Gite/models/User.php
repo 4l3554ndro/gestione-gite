@@ -1,9 +1,9 @@
 <?php
 namespace Model;
 class User {
-    public static function create($conn, $nome, $cognome, $email, $password) {
+    public static function create($conn, $nome, $cognome, $email, $password, $ruolo) {
 
-        $stmt = $conn->prepare("INSERT INTO users (nome, cognome, email, password) VALUES ('$nome', '$cognome', '$email', '$password')");
+        $stmt = $conn->prepare("INSERT INTO users (nome, cognome, email, password,ruolo) VALUES ('$nome', '$cognome', '$email', '$password', '$ruolo')");
         $stmt->execute();
     }
     public static function findByEmail($conn, $email) {
