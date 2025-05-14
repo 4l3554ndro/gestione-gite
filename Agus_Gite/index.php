@@ -3,10 +3,13 @@ require_once 'config/db.php';
 require_once 'utils/session.php';
 require_once 'models/User.php';
 require_once 'models/Gita.php';
+require_once 'models/Tour.php';
+require_once 'controllers/TourController.php';
 require_once 'controllers/AuthController.php';
 require_once 'controllers/GiteController.php';
 use controllers\AuthController;
 use controllers\GiteController;
+use controllers\TourController;
 ?>
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -49,6 +52,7 @@ else
 
 $authcontroller = new AuthController($conn);
 $gitecontroller = new GiteController($conn);
+$tourcontroller = new TourController($conn);
 
 $page = $_GET['page'] ?? 'home';
 switch ($page) {
@@ -83,6 +87,14 @@ switch ($page) {
         break;
     case 'salva_gita':
         $gitecontroller->salvaGita($conn);
+        break;
+    case 'aggiungi_tour':
+        $tourcontroller->aggiungiTour($conn);
+        break;
+    case 'salva_tour':
+        //dd($_POST);
+        //dd($_GET);
+        $tourcontroller->salvaTour($conn);
         break;
     case 'iscriviti_gita':
         $gitecontroller->iscrivitiGita($conn);

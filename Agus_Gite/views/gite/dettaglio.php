@@ -63,6 +63,13 @@
         </table>
     </div>
 
+    <!-- Aggiungi pulsante per aggiungere un nuovo tour -->
+    <?php if (isAdmin()): ?>
+        <div class="text-center mt-4">
+            <a href="index.php?page=aggiungi_tour&id=<?= $gita['id'] ?>" class="btn btn-primary">Aggiungi Nuovo Tour</a>
+        </div>
+    <?php endif; ?>
+
     <div class="text-center mt-4">
         <a href="?page=gite" class="btn btn-secondary">Torna indietro</a>
     </div>
