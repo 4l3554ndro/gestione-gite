@@ -120,6 +120,9 @@ switch ($page) {
     case 'salva_modifica_tour':
         $tourcontroller->salvaModificaTour($conn);
         break;
+    case 'salva_recensione':
+        $gitecontroller->salvaRecensione($conn);
+        break;
     default:
         include 'views/home.php';
 }

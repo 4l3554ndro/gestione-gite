@@ -19,11 +19,15 @@ function showGite($conn) {
 
 function dettaglioGita($conn) {
     $id = $_GET['id'] ?? 0;
-    $gita = Gita::find($conn, $id);
-    $iscritto = Gita::iscrittoAGita($conn, $id, $_SESSION['user_id']);
-    //$iscrittoTour = Gita::iscrittoATour($conn, $id, $_SESSION['user_id']);
-    $tours = Gita::findtour($conn, $id);
-    
+    $gita = \Model\Gita::find($conn, $id);
+    $iscritto = \Model\Gita::iscrittoAGita($conn, $id, $_SESSION['user_id']);
+    $tours = \Model\Gita::findtour($conn, $id);
+
+    // Recupera recensioni
+    $stmt = $conn->prepare("SELECT r.*, u.nome, u.cognome FROM recensioni r JOIN users u ON r.user_id = u.id WHERE r.gita_id = ? ORDER BY r.data DESC");
+    $stmt->execute([$id]);
+    $recensioni = $stmt->fetchAll();
+
     include 'views/gite/dettaglio.php';
 }
 
@@ -112,6 +116,15 @@ function salvaModificaGita($conn) {
     $id = $_GET['id'] ?? 0;
     \Model\Gita::update($conn, $id, $_POST['nome'], $_POST['descrizione'], $_POST['data'], $_POST['costo'], $_POST['max']);
     header('Location: index.php?page=dettaglio_gita&id=' . $id);
+}
+function salvaRecensione($conn) {
+    $gita_id = $_GET['id'];
+    $user_id = $_SESSION['user_id'];
+    $testo = $_POST['testo'];
+    $voto = $_POST['voto'];
+    $stmt = $conn->prepare("INSERT INTO recensioni (gita_id, user_id, testo, voto) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$gita_id, $user_id, $testo, $voto]);
+    header('Location: index.php?page=dettaglio_gita&id=' . $gita_id);
 }
 }
 ?>

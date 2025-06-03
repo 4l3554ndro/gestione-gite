@@ -82,6 +82,41 @@
         </div>
     <?php endif; ?>
 
+    <?php if (isset($iscritto['user_id'])): ?>
+        <div class="mb-4">
+            <h5>Lascia una recensione</h5>
+            <form action="index.php?page=salva_recensione&id=<?= $gita['id'] ?>" method="POST">
+                <div class="mb-2">
+                    <label for="voto" class="form-label">Voto:</label>
+                    <select name="voto" id="voto" class="form-select" required>
+                        <option value="">Seleziona</option>
+                        <?php for ($i=1; $i<=5; $i++): ?>
+                            <option value="<?= $i ?>"><?= $i ?></option>
+                        <?php endfor; ?>
+                    </select>
+                </div>
+                <div class="mb-2">
+                    <label for="testo" class="form-label">Recensione:</label>
+                    <textarea name="testo" id="testo" class="form-control" rows="2" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-success btn-sm">Invia Recensione</button>
+            </form>
+        </div>
+    <?php endif; ?>
+
+    <h4 class="mt-5">Recensioni</h4>
+    <?php if (!empty($recensioni)): ?>
+        <?php foreach ($recensioni as $rec): ?>
+            <div class="border rounded p-2 mb-2">
+                <strong><?= htmlspecialchars($rec['nome']) ?> <?= htmlspecialchars($rec['cognome']) ?></strong>
+                <span class="badge bg-warning text-dark"><?= $rec['voto'] ?>/5</span>
+                <p class="mb-1"><?= nl2br(htmlspecialchars($rec['testo'])) ?></p>
+                <small class="text-muted"><?= $rec['data'] ?></small>
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p>Nessuna recensione ancora.</p>
+    <?php endif; ?>
     <div class="text-center mt-4">
         <a href="?page=gite" class="btn btn-secondary">Torna indietro</a>
     </div>
