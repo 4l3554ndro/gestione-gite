@@ -35,6 +35,11 @@
                 <input type="number" step="0.01" class="form-control" id="costo_aggiuntivo" name="costo_aggiuntivo" required>
             </div>
             
+            <!-- Sconto -->
+            <div class="mb-3">
+                <label for="sconto" class="form-label">Sconto (%)</label>
+                <input type="number" step="0.01" min="0" max="100" class="form-control" id="sconto" name="sconto" value="<?= isset($tour['sconto']) ? $tour['sconto'] : 0 ?>" required>
+            </div>
 
             <!-- Submit -->
             <button type="submit" class="btn btn-primary w-100">Aggiungi Tour</button>

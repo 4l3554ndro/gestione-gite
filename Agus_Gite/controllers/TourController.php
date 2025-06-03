@@ -19,7 +19,15 @@ function aggiungiTour($conn) {
 function salvaTour($conn) {
 
     //dd($_POST);
-    Tour::create($conn, $_GET['id'], $_POST['nome_tour'], $_POST['descrizione'], $_POST['durata'], $_POST['costo_aggiuntivo']);
+    Tour::create(
+        $conn,
+        $_GET['id'],
+        $_POST['nome_tour'],
+        $_POST['descrizione'],
+        $_POST['durata'],
+        $_POST['costo_aggiuntivo'],
+        $_POST['sconto']
+    );
     header('Location: index.php?page=dettaglio_gita&id=' . $_GET['id']);
 }
 
@@ -34,12 +42,13 @@ function modificaTour($conn) {
 function salvaModificaTour($conn) {
     $id = $_GET['id'] ?? 0;
     $gita_id = $_GET['gita_id'] ?? 0;
-    $stmt = $conn->prepare("UPDATE tour SET nome_tour=?, descrizione=?, durata=?, costo_aggiuntivo=? WHERE id=?");
+    $stmt = $conn->prepare("UPDATE tour SET nome_tour=?, descrizione=?, durata=?, costo_aggiuntivo=?, sconto=? WHERE id=?");
     $stmt->execute([
         $_POST['nome_tour'],
         $_POST['descrizione'],
         $_POST['durata'],
         $_POST['costo_aggiuntivo'],
+        $_POST['sconto'],
         $id
     ]);
     header('Location: index.php?page=dettaglio_gita&id=' . $gita_id);

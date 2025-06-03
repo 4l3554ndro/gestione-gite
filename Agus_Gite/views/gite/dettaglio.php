@@ -10,6 +10,12 @@
 <body class="bg-light">
 
 <div class="container my-5">
+    <?php if (!empty($errore)): ?>
+        <div class="alert alert-danger text-center">
+            <?= htmlspecialchars($errore) ?>
+        </div>
+    <?php endif; ?>
+
     <h2 class="mb-4 text-center">Dettagli Gita: <?= htmlspecialchars($gita['nome_meta']) ?></h2>
 
     <div class="mb-4 text-center">
@@ -51,7 +57,20 @@
                         <td><?= htmlspecialchars($tour['nome_tour']) ?></td>
                         <td><?= htmlspecialchars($tour['descrizione']) ?></td>
                         <td><?= htmlspecialchars($tour['durata']) ?></td>
-                        <td>€<?= number_format($tour['costo_aggiuntivo'], 2, ',', '.') ?></td>
+                        <td>
+                            <?php
+                                $prezzo = $tour['costo_aggiuntivo'];
+                                $sconto = isset($tour['sconto']) ? $tour['sconto'] : 0;
+                                if ($sconto > 0) {
+                                    $prezzo_scontato = $prezzo - ($prezzo * $sconto / 100);
+                                    echo "<span class='text-decoration-line-through text-danger'>€" . number_format($prezzo, 2, ',', '.') . "</span> ";
+                                    echo "<span class='fw-bold text-success'>€" . number_format($prezzo_scontato, 2, ',', '.') . "</span>";
+                                    echo " <span class='badge bg-success'>-" . $sconto . "%</span>";
+                                } else {
+                                    echo "€" . number_format($prezzo, 2, ',', '.');
+                                }
+                            ?>
+                        </td>
                         <td>
                             <?php if (isset($iscritto['user_id'])): ?>
                                 <?php if (isset($tour['tour_id'])): ?>
@@ -121,6 +140,34 @@
     <div class="text-center mt-4">
         <a href="?page=gite" class="btn btn-secondary">Torna indietro</a>
     </div>
+
+    <?php if (isAdmin()): ?>
+        <h4 class="mt-5">Utenti iscritti a questa gita</h4>
+        <div class="table-responsive mb-4">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Cognome</th>
+                        <th>Email</th>
+                        <th>Recensione</th>
+                        <th>Voto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($utenti_iscritti as $utente): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($utente['nome']) ?></td>
+                            <td><?= htmlspecialchars($utente['cognome']) ?></td>
+                            <td><?= htmlspecialchars($utente['email']) ?></td>
+                            <td><?= $utente['recensione'] ? nl2br(htmlspecialchars($utente['recensione'])) : '<span class="text-muted">Nessuna</span>' ?></td>
+                            <td><?= $utente['voto'] ? $utente['voto'].'/5' : '-' ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    <?php endif; ?>
 </div>
 
 <!-- Bootstrap JS -->

@@ -28,6 +28,17 @@ function dettaglioGita($conn) {
     $stmt->execute([$id]);
     $recensioni = $stmt->fetchAll();
 
+    // Recupera utenti iscritti e la loro recensione (se presente)
+    $stmt = $conn->prepare("
+        SELECT u.nome, u.cognome, u.email, r.testo AS recensione, r.voto
+        FROM iscrizioni i
+        JOIN users u ON i.user_id = u.id
+        LEFT JOIN recensioni r ON r.gita_id = i.gita_id AND r.user_id = u.id
+        WHERE i.gita_id = ?
+    ");
+    $stmt->execute([$id]);
+    $utenti_iscritti = $stmt->fetchAll();
+
     include 'views/gite/dettaglio.php';
 }
 
@@ -41,8 +52,35 @@ function dettaglioGita($conn) {
 function iscrivitiGita($conn) {
     $id = $_GET['id'] ?? 0;
     $user_id = $_SESSION['user_id'];
-    Gita::iscrivitiAGita($conn, $id, $user_id);
-    header('Location: index.php?page=dettaglio_gita&id=' . $id);
+
+    $stmt = $conn->prepare("SELECT bloccato FROM users WHERE id=?");
+    $stmt->execute([$user_id]);
+    if ($stmt->fetchColumn()) {
+        $errore = "Il tuo account è stato bloccato e non puoi effettuare questa operazione.";
+        // mostra la view con il messaggio di errore
+        // esempio per iscrizione gita:
+        $gita = \Model\Gita::find($conn, $id);
+        $iscritto = \Model\Gita::iscrittoAGita($conn, $id, $user_id);
+        $tours = \Model\Gita::findtour($conn, $id);
+        include 'views/gite/dettaglio.php';
+        return;
+    }
+
+    $success = \Model\Gita::iscrivitiAGita($conn, $id, $user_id);
+    if ($success === false) {
+        // Limite raggiunto, mostra messaggio nella pagina dettaglio
+        $gita = \Model\Gita::find($conn, $id);
+        $iscritto = \Model\Gita::iscrittoAGita($conn, $id, $user_id);
+        $tours = \Model\Gita::findtour($conn, $id);
+        $errore = "Limite massimo di partecipanti raggiunto. Non puoi iscriverti a questa gita.";
+        // Recupera recensioni se necessario
+        $stmt = $conn->prepare("SELECT r.*, u.nome, u.cognome FROM recensioni r JOIN users u ON r.user_id = u.id WHERE r.gita_id = ? ORDER BY r.data DESC");
+        $stmt->execute([$id]);
+        $recensioni = $stmt->fetchAll();
+        include 'views/gite/dettaglio.php';
+    } else {
+        header('Location: index.php?page=dettaglio_gita&id=' . $id);
+    }
 }
 function disiscrivitiGita($conn) {
     $id = $_GET['id'] ?? 0;

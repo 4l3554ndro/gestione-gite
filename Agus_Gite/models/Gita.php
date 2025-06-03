@@ -36,11 +36,23 @@ class Gita {
             $stmt->execute();
             $costo_base = $stmt->fetchColumn();
 
-            // Calcola costo totale dei tour a cui l'utente è iscritto
-            $stmt = $conn->prepare("SELECT SUM(t.costo_aggiuntivo) FROM iscrizione_tour it JOIN tour t ON it.tour_id = t.id WHERE it.iscrizione_id = ?");
+            // Calcola costo totale dei tour a cui l'utente è iscritto, considerando lo sconto
+            $stmt = $conn->prepare("
+                SELECT t.costo_aggiuntivo, t.sconto
+                FROM iscrizione_tour it
+                JOIN tour t ON it.tour_id = t.id
+                WHERE it.iscrizione_id = ?
+            ");
             $stmt->execute([$iscrizione['id']]);
-            $costo_tour = $stmt->fetchColumn();
-            if (!$costo_tour) $costo_tour = 0;
+            $costo_tour = 0;
+            while ($row = $stmt->fetch()) {
+                $prezzo = $row['costo_aggiuntivo'];
+                $sconto = isset($row['sconto']) ? $row['sconto'] : 0;
+                if ($sconto > 0) {
+                    $prezzo = $prezzo - ($prezzo * $sconto / 100);
+                }
+                $costo_tour += $prezzo;
+            }
 
             $iscrizione['prezzo_totale'] = $costo_base + $costo_tour;
         }

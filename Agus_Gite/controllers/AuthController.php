@@ -52,5 +52,21 @@ function logged() {
     }
 }
 
+function bloccaUtente($conn) {
+    if (!isAdmin()) exit;
+    $id = $_GET['id'] ?? 0;
+    $stmt = $conn->prepare("UPDATE users SET bloccato=1 WHERE id=?");
+    $stmt->execute([$id]);
+    header('Location: index.php?page=admin');
+}
+
+function sbloccaUtente($conn) {
+    if (!isAdmin()) exit;
+    $id = $_GET['id'] ?? 0;
+    $stmt = $conn->prepare("UPDATE users SET bloccato=0 WHERE id=?");
+    $stmt->execute([$id]);
+    header('Location: index.php?page=admin');
+}
+
 }
 ?>

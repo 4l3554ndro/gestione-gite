@@ -1,4 +1,4 @@
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modifica Tour</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -21,6 +21,10 @@
             <div class="mb-3">
                 <label for="costo_aggiuntivo" class="form-label">Costo aggiuntivo (€)</label>
                 <input type="number" step="0.01" class="form-control" id="costo_aggiuntivo" name="costo_aggiuntivo" value="<?= $tour['costo_aggiuntivo'] ?>" required>
+            </div>
+            <div class="mb-3">
+                <label for="sconto" class="form-label">Sconto (%)</label>
+                <input type="number" step="0.01" min="0" max="100" class="form-control" id="sconto" name="sconto" value="<?= isset($tour['sconto']) ? $tour['sconto'] : 0 ?>" required>
             </div>
             <div class="d-grid gap-2">
                 <button type="submit" class="btn btn-primary">Salva Modifiche</button>

@@ -42,6 +42,7 @@
                 <th>Cognome</th>
                 <th>Email</th>
                 <th>Ruolo</th>
+                <th>Azioni</th>
             </tr>
         </thead>
         <tbody>
@@ -51,6 +52,13 @@
                     <td><?= htmlspecialchars($utente['cognome']) ?></td>
                     <td><?= htmlspecialchars($utente['email']) ?></td>
                     <td><?= htmlspecialchars($utente['ruolo']) ?></td>
+                    <td>
+                        <?php if ($utente['bloccato']): ?>
+                            <a href="index.php?page=sblocca_utente&id=<?= $utente['id'] ?>" class="btn btn-success btn-sm">Sblocca</a>
+                        <?php else: ?>
+                            <a href="index.php?page=blocca_utente&id=<?= $utente['id'] ?>" class="btn btn-danger btn-sm">Blocca</a>
+                        <?php endif; ?>
+                    </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
