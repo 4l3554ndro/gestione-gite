@@ -137,10 +137,10 @@ switch ($page) {
         $tourcontroller->eliminaTour($conn);
         break;
     case 'blocca_utente':
-        $gitecontroller->bloccaUtente($conn);
+        $authcontroller->bloccaUtente($conn);
         break;
     case 'sblocca_utente':
-        $gitecontroller->sbloccaUtente($conn);
+        $authcontroller->sbloccaUtente($conn);
         break;
     default:
         include 'views/home.php';
