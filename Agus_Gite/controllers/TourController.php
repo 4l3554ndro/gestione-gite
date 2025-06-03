@@ -44,5 +44,17 @@ function salvaModificaTour($conn) {
     ]);
     header('Location: index.php?page=dettaglio_gita&id=' . $gita_id);
 }
+
+function eliminaTour($conn) {
+    if (!isAdmin()) {
+        header('Location: index.php');
+        exit;
+    }
+    $id = $_GET['id'] ?? 0;
+    $gita_id = $_GET['gita_id'] ?? 0;
+    $stmt = $conn->prepare("DELETE FROM tour WHERE id = ?");
+    $stmt->execute([$id]);
+    header('Location: index.php?page=dettaglio_gita&id=' . $gita_id);
+}
 }
 ?>

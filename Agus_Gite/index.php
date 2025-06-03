@@ -130,6 +130,12 @@ switch ($page) {
     case 'admin':
         $gitecontroller->pannelloAdmin($conn);
         break;
+    case 'elimina_gita':
+        $gitecontroller->eliminaGita($conn);
+        break;
+    case 'elimina_tour':
+        $tourcontroller->eliminaTour($conn);
+        break;
     default:
         include 'views/home.php';
 }

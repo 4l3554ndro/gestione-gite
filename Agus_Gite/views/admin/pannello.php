@@ -27,7 +27,7 @@
                     <td>
                         <a href="index.php?page=dettaglio_gita&id=<?= $gita['idgita'] ?>" class="btn btn-info btn-sm">Dettaglio</a>
                         <a href="index.php?page=modifica_gita&id=<?= $gita['idgita'] ?>" class="btn btn-warning btn-sm">Modifica</a>
-                        <!-- Puoi aggiungere anche elimina -->
+                        <a href="index.php?page=elimina_gita&id=<?= $gita['idgita'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Sei sicuro di voler eliminare questa gita?');">Elimina</a>
                     </td>
                 </tr>
             <?php endforeach; ?>

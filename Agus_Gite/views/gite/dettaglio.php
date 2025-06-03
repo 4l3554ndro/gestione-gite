@@ -66,6 +66,7 @@
                         <?php if (isAdmin()): ?>
                             <td>
                                 <a href="index.php?page=modifica_tour&id=<?= $tour['id'] ?>" class="btn btn-warning btn-sm">Modifica</a>
+                                <a href="index.php?page=elimina_tour&id=<?= $tour['id'] ?>&gita_id=<?= $gita['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Sei sicuro di voler eliminare questo tour?');">Elimina</a>
                             </td>
                         <?php endif; ?>
                     </tr>

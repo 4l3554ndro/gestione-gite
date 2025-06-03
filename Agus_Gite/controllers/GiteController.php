@@ -138,5 +138,15 @@ function pannelloAdmin($conn) {
     $utenti = $stmt->fetchAll();
     include 'views/admin/pannello.php';
 }
+function eliminaGita($conn) {
+    if (!isAdmin()) {
+        header('Location: index.php');
+        exit;
+    }
+    $id = $_GET['id'] ?? 0;
+    $stmt = $conn->prepare("DELETE FROM gite WHERE id = ?");
+    $stmt->execute([$id]);
+    header('Location: index.php?page=gite');
+}
 }
 ?>
