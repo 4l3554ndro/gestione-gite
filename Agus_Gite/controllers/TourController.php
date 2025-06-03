@@ -22,5 +22,27 @@ function salvaTour($conn) {
     Tour::create($conn, $_GET['id'], $_POST['nome_tour'], $_POST['descrizione'], $_POST['durata'], $_POST['costo_aggiuntivo']);
     header('Location: index.php?page=dettaglio_gita&id=' . $_GET['id']);
 }
+
+function modificaTour($conn) {
+    $id = $_GET['id'] ?? 0;
+    $stmt = $conn->prepare("SELECT * FROM tour WHERE id = ?");
+    $stmt->execute([$id]);
+    $tour = $stmt->fetch();
+    include 'views/tour/modifica.php';
+}
+
+function salvaModificaTour($conn) {
+    $id = $_GET['id'] ?? 0;
+    $gita_id = $_GET['gita_id'] ?? 0;
+    $stmt = $conn->prepare("UPDATE tour SET nome_tour=?, descrizione=?, durata=?, costo_aggiuntivo=? WHERE id=?");
+    $stmt->execute([
+        $_POST['nome_tour'],
+        $_POST['descrizione'],
+        $_POST['durata'],
+        $_POST['costo_aggiuntivo'],
+        $id
+    ]);
+    header('Location: index.php?page=dettaglio_gita&id=' . $gita_id);
+}
 }
 ?>

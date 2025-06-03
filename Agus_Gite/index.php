@@ -108,6 +108,18 @@ switch ($page) {
     case 'disiscriviti_tour':
         $gitecontroller->disiscrivitiTour($conn);
         break;
+    case 'modifica_gita':
+        $gitecontroller->modificaGita($conn);
+        break;
+    case 'salva_modifica_gita':
+        $gitecontroller->salvaModificaGita($conn);
+        break;
+    case 'modifica_tour':
+        $tourcontroller->modificaTour($conn);
+        break;
+    case 'salva_modifica_tour':
+        $tourcontroller->salvaModificaTour($conn);
+        break;
     default:
         include 'views/home.php';
 }

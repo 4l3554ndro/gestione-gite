@@ -68,5 +68,50 @@ function salvaGita($conn) {
     Gita::create($conn, $_POST['nome'], $_POST['descrizione'], $_POST['data'], $_POST['costo'], $_POST['max']);
     header('Location: index.php?page=gite');
 }
+public function iscriviUtente() {
+    $idGita = $_POST['id_gita'];
+    $idUtente = $_SESSION['user_id'];
+    $tourSelezionati = $_POST['tour'] ?? [];
+
+    // Recupera costo base gita
+    $stmt = $this->db->prepare("SELECT costo FROM gite WHERE id = ?");
+    $stmt->execute([$idGita]);
+    $costoBase = $stmt->fetchColumn();
+
+    // Calcola costo totale tour selezionati
+    $costoTour = 0;
+    if (!empty($tourSelezionati)) {
+        $in = str_repeat('?,', count($tourSelezionati) - 1) . '?';
+        $stmt = $this->db->prepare("SELECT SUM(costo_aggiuntivo) FROM tour WHERE id IN ($in)");
+        $stmt->execute($tourSelezionati);
+        $costoTour = $stmt->fetchColumn();
+    }
+
+    $prezzoTotale = $costoBase + $costoTour;
+
+    // Salva iscrizione e prezzo totale
+    $stmt = $this->db->prepare("INSERT INTO iscrizioni (id_gita, id_utente, prezzo_totale) VALUES (?, ?, ?)");
+    $stmt->execute([$idGita, $idUtente, $prezzoTotale]);
+
+    // Salva tour scelti (tabella ponte iscrizione_tour)
+    $idIscrizione = $this->db->lastInsertId();
+    foreach ($tourSelezionati as $idTour) {
+        $stmt = $this->db->prepare("INSERT INTO iscrizione_tour (id_iscrizione, id_tour) VALUES (?, ?)");
+        $stmt->execute([$idIscrizione, $idTour]);
+    }
+
+    // Redirect o messaggio di successo
+}
+function modificaGita($conn) {
+    $id = $_GET['id'] ?? 0;
+    $gita = \Model\Gita::find($conn, $id);
+    include 'views/gite/modifica.php';
+}
+
+function salvaModificaGita($conn) {
+    $id = $_GET['id'] ?? 0;
+    \Model\Gita::update($conn, $id, $_POST['nome'], $_POST['descrizione'], $_POST['data'], $_POST['costo'], $_POST['max']);
+    header('Location: index.php?page=dettaglio_gita&id=' . $id);
+}
 }
 ?>

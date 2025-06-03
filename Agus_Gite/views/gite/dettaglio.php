@@ -25,6 +25,9 @@
         <p><strong>Data:</strong> <?= $gita['data'] ?></p>
         <p><strong>Costo:</strong> €<?= number_format($gita['costo_base'], 2, ',', '.') ?></p>
         <p><strong>Posti disponibili:</strong> <?= $gita['max_partecipanti'] ?></p>
+        <?php if (isset($iscritto['user_id'])): ?>
+            <p><strong>Prezzo totale (gita + tour):</strong> €<?= number_format($iscritto['prezzo_totale'], 2, ',', '.') ?></p>
+        <?php endif; ?>
     </div>
 
     <h4 class="mt-5">Tour Disponibili</h4>
@@ -37,6 +40,9 @@
                     <th>Durata</th>
                     <th>Costo</th>
                     <th>Iscrizione</th>
+                    <?php if (isAdmin()): ?>
+                        <th>Azioni</th>
+                    <?php endif; ?>
                 </tr>
             </thead>
             <tbody>
@@ -57,6 +63,11 @@
                                 <span class="text-muted">Iscriviti prima alla gita</span>
                             <?php endif; ?>
                         </td>
+                        <?php if (isAdmin()): ?>
+                            <td>
+                                <a href="index.php?page=modifica_tour&id=<?= $tour['id'] ?>" class="btn btn-warning btn-sm">Modifica</a>
+                            </td>
+                        <?php endif; ?>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
@@ -67,6 +78,7 @@
     <?php if (isAdmin()): ?>
         <div class="text-center mt-4">
             <a href="index.php?page=aggiungi_tour&id=<?= $gita['id'] ?>" class="btn btn-primary">Aggiungi Nuovo Tour</a>
+            <a href="index.php?page=modifica_gita&id=<?= $gita['id'] ?>" class="btn btn-warning ms-2">Modifica Gita</a>
         </div>
     <?php endif; ?>
 

@@ -19,15 +19,52 @@ class Gita {
         $stmt = $conn->prepare("INSERT INTO gite (nome_meta, descrizione, data, costo_base, max_partecipanti) VALUES ('$nome', '$descrizione', '$data', '$costo', '$max')");
         $stmt->execute();
     }
+    public static function update($conn, $id, $nome, $descrizione, $data, $costo, $max) {
+        $stmt = $conn->prepare("UPDATE gite SET nome_meta=?, descrizione=?, data=?, costo_base=?, max_partecipanti=? WHERE id=?");
+        $stmt->execute([$nome, $descrizione, $data, $costo, $max, $id]);
+    }
 // gita
-    public static function iscrittoAGita($conn,$id, $user_id) {
-        $stmt = $conn->prepare("SELECT * FROM iscrizioni i WHERE i.gita_id=$id AND i.user_id=$user_id");
+    public static function iscrittoAGita($conn, $id, $user_id) {
+        // Recupera iscrizione
+        $stmt = $conn->prepare("SELECT * FROM iscrizioni WHERE gita_id=$id AND user_id=$user_id");
         $stmt->execute();
-        return $stmt->fetch();
+        $iscrizione = $stmt->fetch();
+
+        if ($iscrizione) {
+            // Calcola costo base gita
+            $stmt = $conn->prepare("SELECT costo_base FROM gite WHERE id = $id");
+            $stmt->execute();
+            $costo_base = $stmt->fetchColumn();
+
+            // Calcola costo totale dei tour a cui l'utente è iscritto
+            $stmt = $conn->prepare("SELECT SUM(t.costo_aggiuntivo) FROM iscrizione_tour it JOIN tour t ON it.tour_id = t.id WHERE it.iscrizione_id = ?");
+            $stmt->execute([$iscrizione['id']]);
+            $costo_tour = $stmt->fetchColumn();
+            if (!$costo_tour) $costo_tour = 0;
+
+            $iscrizione['prezzo_totale'] = $costo_base + $costo_tour;
+        }
+
+        return $iscrizione;
     }
     public static function iscrivitiAGita($conn, $id, $user_id) {
-        $stmt = $conn->prepare("INSERT INTO iscrizioni(user_id, gita_id) VALUES ('$user_id','$id')");
+        // Recupera il numero massimo di partecipanti per la gita
+        $stmt = $conn->prepare("SELECT max_partecipanti FROM gite WHERE id = $id");
         $stmt->execute();
+        $max = $stmt->fetchColumn();
+
+        // Conta gli iscritti attuali
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM iscrizioni WHERE gita_id = $id");
+        $stmt->execute();
+        $count = $stmt->fetchColumn();
+
+        if ($count >= $max) {
+            return false; // Limite raggiunto
+        }
+
+        // Procedi con l'iscrizione
+        $stmt = $conn->prepare("INSERT INTO iscrizioni (gita_id,user_id) VALUES ($id, $user_id)");
+        return $stmt->execute();
     }
     public static function disiscrivitiAGita($conn, $id, $user_id) {
         $stmt = $conn->prepare("DELETE FROM iscrizioni WHERE user_id=$user_id AND gita_id=$id");
