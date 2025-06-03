@@ -126,5 +126,17 @@ function salvaRecensione($conn) {
     $stmt->execute([$gita_id, $user_id, $testo, $voto]);
     header('Location: index.php?page=dettaglio_gita&id=' . $gita_id);
 }
+function pannelloAdmin($conn) {
+    if (!isAdmin()) {
+        header('Location: index.php');
+        exit;
+    }
+    // Gite
+    $gite = \Model\Gita::all($conn, $_SESSION['user_id']);
+    // Utenti
+    $stmt = $conn->query("SELECT * FROM users");
+    $utenti = $stmt->fetchAll();
+    include 'views/admin/pannello.php';
+}
 }
 ?>

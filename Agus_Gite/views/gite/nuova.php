@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nuova Gita</title>
     <!-- Bootstrap 5 CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light d-flex justify-content-center align-items-center vh-100">
+<div class="d-flex justify-content-center align-items-center mt-5">
 
     <div class="card shadow p-4" style="max-width: 500px; width: 100%;">
         <h2 class="text-center mb-4">Nuova Gita</h2>
@@ -41,5 +37,4 @@
 
     <!-- Bootstrap JS (opzionale per funzionalità dinamiche) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+</div>

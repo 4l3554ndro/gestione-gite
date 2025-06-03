@@ -34,6 +34,11 @@ use controllers\TourController;
                         <a class="nav-link" href="index.php?page=logout">Logout</a>
                     <?php } ?>
                 </li>
+                <li class="nav-item">
+                    <?php if (isAdmin()) { ?>
+                        <a class="nav-link" href="index.php?page=admin">Admin</a>
+                    <?php } ?>
+                </li>
             </ul>
         </div>
     </div>
@@ -76,7 +81,6 @@ switch ($page) {
         $authcontroller->login($conn);
         break;
     case 'gite':
-        
         $gitecontroller->showGite($conn);
         break;
     case 'dettaglio_gita':
@@ -122,6 +126,9 @@ switch ($page) {
         break;
     case 'salva_recensione':
         $gitecontroller->salvaRecensione($conn);
+        break;
+    case 'admin':
+        $gitecontroller->pannelloAdmin($conn);
         break;
     default:
         include 'views/home.php';
